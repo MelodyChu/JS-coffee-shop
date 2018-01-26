@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+     <meta charset="utf-8"/>
     <title>Hackbright Coffee Shop</title>
 
     <!-- Bootstrap links -->
@@ -44,40 +45,63 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
     "use strict";
 
     // Set these variables to their DOM elements
 
-    let coffeeImage = document.querySelector("#coffee-image");
+    let coffeeImage = $("#coffee-image");
+    let drinksOrdered = [];
 
-    coffeeImage.setAttribute('src', 'static/coffee_beans.jpg');
+    coffeeImage.attr('src', 'static/coffee_beans.jpg');
 
-    function makeCoffee(evt) {
-        console.log(evt);
-        coffeeImage.setAttribute('src', 'static/coffee_machine.jpg');
+    let espresso = $('#espresso');
+    let latte = $('#latte');
+    let hotChocolate = $('#hot-chocolate');
+
+    function makeCoffee(drinkType) {
+        drinksOrdered.push(drinkType);
+        console.log(drinksOrdered);
+        coffeeImage.attr('src', 'static/coffee_machine.jpg');
+
         setTimeout(function () {
-            coffeeImage.setAttribute('src', 'static/coffee_mug.jpg');
+            coffeeImage.attr('src', 'static/coffee_mug.jpg');
         }, 1500);
+
         setTimeout(function () {
-            coffeeImage.setAttribute('src', 'static/coffee_beans.jpg');
+            coffeeImage.attr('src', 'static/coffee_beans.jpg');
         }, 4000);
+
         console.log("yay coffee");
     }
 
-    coffeeImage.addEventListener('click', makeCoffee);
+    coffeeImage.on('click', function() {makeCoffee("brew"); });
+    // espresso.on('click', function() {makeCoffee("espresso"); });
+    // latte.on('click', function() {makeCoffee("latte"); });
+    $('.btn').on('click', function(evt) {makeCoffee(evt.target.id); });
 
-    let revenueMessage;
+    let revenueMessage = $('#revenue');
+
 
     // use this JavaScript object in further study step
 
-    const prices = {
-        "brew": 2.05,
-        "espresso": 3.25,
-        "latte": 4.15,
-        "hot chocolate": 2.50
-    };
+    const prices = new Map([
+        ["brew", 2.05],
+        ["espresso", 3.25],
+        ["latte", 4.15],
+        ["hot-chocolate", 2.50]
+    ]);
 
+    function revenue() {
+        let totalRev = 0;
+        for (let drink of drinksOrdered) {
+            // price = prices.get(drink);
+            totalRev += prices.get(drink);
+        }
+        console.log(totalRev);
+        return totalRev;
+    }
 
 </script>
 
